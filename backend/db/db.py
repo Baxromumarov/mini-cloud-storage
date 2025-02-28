@@ -7,6 +7,11 @@ load_dotenv()
 
 class DB:
     def __init__(self):
+        print(os.getenv("DB_HOST"))
+        print(os.getenv("DB_NAME"))
+        print(os.getenv("DB_USER"))
+        print(os.getenv("DB_PASSWORD"))
+        
         self.conn = psycopg2.connect(
             host=os.getenv("DB_HOST"),
             database=os.getenv("DB_NAME"),
@@ -18,6 +23,15 @@ class DB:
         cursor.execute("INSERT INTO users (full_name, email, passcode) VALUES (%s, %s, %s)", (user.full_name, user.email, user.passcode))
         self.conn.commit()
         cursor.close()
+
+    def get_user(self, email: str):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
+        if not user:
+            return None
+        return user
         
     def create_user_folder(self, folder: models.Folder):
         cursor = self.conn.cursor()
