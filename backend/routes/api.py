@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 from routes.auth import auth_bp
 from routes.files import files_bp
 from utils import helper
@@ -11,7 +12,7 @@ load_dotenv()
 class CloudApp:
     def __init__(self):
         self.app = Flask(__name__)
-        
+        CORS(self.app)  # Enable CORS for all routes
     
         self.app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 

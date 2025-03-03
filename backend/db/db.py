@@ -5,7 +5,7 @@ from utils import models
 
 load_dotenv()
 
-class DB:
+class DB:   
     def __init__(self):
         print(os.getenv("DB_HOST"))
         print(os.getenv("DB_NAME"))
