@@ -1,3 +1,3 @@
 # .gitignore
 .env
-.server.env
+backend/.server.env
