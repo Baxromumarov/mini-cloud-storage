@@ -12,7 +12,7 @@ export default function LoginForm() {
   const [email, setEmail] = useState("")
   const [step, setStep] = useState(1)
   const [passcode, setPasscode] = useState("")
-  const [fullName, setFullName] = useState("")
+  const [full_name, setfull_name] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -56,7 +56,7 @@ export default function LoginForm() {
         body: JSON.stringify({
           email,
           passcode,
-          fullName
+          full_name
         }),
       })
 
@@ -67,7 +67,7 @@ export default function LoginForm() {
       const data = await response.json()
       if (data.success) {
         // Store user data in localStorage
-        localStorage.setItem("user", JSON.stringify({ email, fullName }))
+        localStorage.setItem("user", JSON.stringify({ email, full_name }))
         // Redirect to dashboard
         router.push("/dashboard")
       } else {
@@ -103,13 +103,13 @@ export default function LoginForm() {
       ) : (
         <form onSubmit={handleCredentialsSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name</Label>
+            <Label htmlFor="full_name">Full Name</Label>
             <Input
-              id="fullName"
+              id="full_name"
               type="text"
               placeholder="Enter your full name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={full_name}
+              onChange={(e) => setfull_name(e.target.value)}
               required
             />
           </div>

@@ -1,17 +1,17 @@
-import { User } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { User } from "lucide-react"
 
 interface ProfileSidebarProps {
   user: {
     email: string
-    fullName: string
+    full_name: string
   }
   onLogout: () => void
 }
 
 export default function ProfileSidebar({ user, onLogout }: ProfileSidebarProps) {
-  const initials = user.fullName
+  const initials = user.full_name
     .split(" ")
     .map((name) => name[0])
     .join("")
@@ -24,7 +24,7 @@ export default function ProfileSidebar({ user, onLogout }: ProfileSidebarProps) 
           <AvatarFallback className="text-xl">{initials}</AvatarFallback>
         </Avatar>
         <div className="text-center">
-          <h2 className="font-semibold text-lg">{user.fullName}</h2>
+          <h2 className="font-semibold text-lg">{user.full_name}</h2>
           <p className="text-sm text-gray-500">{user.email}</p>
         </div>
       </div>

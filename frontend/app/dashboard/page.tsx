@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import ProfileSidebar from "@/components/profile-sidebar"
 import FolderView from "@/components/folder-view"
+import ProfileSidebar from "@/components/profile-sidebar"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function Dashboard() {
-  const [user, setUser] = useState<{ email: string; fullName: string } | null>(null)
+  const [user, setUser] = useState<{ email: string; full_name: string } | null>(null)
   const router = useRouter()
 
   useEffect(() => {
