@@ -9,7 +9,7 @@ import datetime
 
 load_dotenv()
 passcode_dict = {
-    'baxromumarov10@gmail.com': 123456
+    "baxromumarov10@gmail.com": "123456"
 }
 
 class JWTAuth:
@@ -38,7 +38,7 @@ class JWTAuth:
             return {"error": "Token expired"}
         except jwt.InvalidTokenError:
             return {"error": "Invalid token"}
-    def generate_pass_code(self):
+    def generate_passcode(self):
         return random.randint(100000, 999999)
 
     def generate_token(self,email):
@@ -63,11 +63,11 @@ class Helper(JWTAuth):
     
 
 
-        message = self.generate_pass_code()
-        passcode_dict[email] = message
+        passcode = self.generate_passcode()
+        passcode_dict[email] = str(passcode)
 
         # Format message as a spoiler
-        formatted_message = f"Email: ```{email}```\nOne time passcode: ```\n{message}\n```"
+        formatted_message = f"Email: ```{email}```\nOne time passcode: ```\n{passcode}\n```"
         # Escape any special characters for MarkdownV2
         # formatted_message = formatted_message.replace(".", "\\.").replace("`", "\\`")
 

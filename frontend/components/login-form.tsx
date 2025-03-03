@@ -25,7 +25,7 @@ export default function LoginForm() {
       console.log("Sending passcode to:", email)
 
       try {
-        await fetch(`https://api.cloud.storage.bakhrom.org/passcode?email=${encodeURIComponent(email)}`, {
+        await fetch(`https://api.cloud.storage.bakhrom.org/send_passcode?email=${encodeURIComponent(email)}`, {
           method: "GET",
           mode: "cors",
           credentials: "include",
@@ -47,8 +47,11 @@ export default function LoginForm() {
     try {
       const response = await fetch('https://api.cloud.storage.bakhrom.org/login', {
         method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
           email,
@@ -121,9 +124,19 @@ export default function LoginForm() {
               required
             />
           </div>
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Processing..." : "Sign In"}
-          </Button>
+          <div className="flex gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setStep(1)}
+              className="w-full"
+            >
+              Back
+            </Button>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Processing..." : "Sign In"}
+            </Button>
+          </div>
         </form>
       )}
     </div>

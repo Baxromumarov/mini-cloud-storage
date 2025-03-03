@@ -10,6 +10,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
+    // Validate passcode is a valid number
+    const parsedPasscode = parseInt(passcode)
+    if (isNaN(parsedPasscode)) {
+      return NextResponse.json({ error: "Passcode must be a valid number" }, { status: 400 })
+    }
+
     // Send request to the external API
     const response = await fetch('https://api.cloud.storage.bakhrom.org/login', {
       method: 'POST',
@@ -17,7 +23,7 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        passcode: Number(passcode),
+        passcode: parsedPasscode,
         full_name: fullName,
         email: email
       })
