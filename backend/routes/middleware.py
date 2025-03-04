@@ -16,6 +16,7 @@ def jwt_middleware(func):
             return jsonify({"error": "Authorization header is required"}), 401
 
         token = auth_header.split(" ")[1]
+        print("TOKEN: ",token)
         result = JWTAuth().verify_token(token)  # Your token verification logic
         if result["status"] == "error":
             return jsonify({"error": result["message"]}), 401

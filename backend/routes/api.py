@@ -3,6 +3,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from routes.auth import auth_bp
 from routes.files import files_bp
+from routes.folders import folders_bp
 from utils import helper
 from db.db import DB
 import os
@@ -25,6 +26,7 @@ class CloudApp:
         # Register blueprints
         self.app.register_blueprint(auth_bp)
         self.app.register_blueprint(files_bp)
+        self.app.register_blueprint(folders_bp)
 
     def run(self, debug=True):
         self.app.run(debug=debug)

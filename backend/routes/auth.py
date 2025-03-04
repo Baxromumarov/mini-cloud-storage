@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils import helper, models
 from db.db import DB
+from db.users import Users
 from utils.helper import Helper
 
 auth_bp = Blueprint("auth", __name__)
@@ -13,6 +14,7 @@ def login():
         email=request.json.get("email"),
         passcode=request.json.get("passcode"),
     )
+
 
     if not user.email:
         return jsonify({"error": "Email is required"}), 400
@@ -32,12 +34,22 @@ def login():
     if user.passcode != "123456":
         helper.passcode_dict.pop(user.email)
 
-    db = DB()
+    db = Users()
     db_user = db.get_user(user.email)
-    if not db_user:
-        db.create_user(user)
+    user_id = db_user[0] if db_user else db.create_user(user)
 
-    return jsonify({"token": token})
+    return jsonify({"token": token,"user_id":user_id})
+
+
+
+@auth_bp.route("/send_passcode", methods=["GET"])
+def send_passcode():
+    email = request.args.get("email")
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+    
+    Helper().send_telegram_bot_message(email)
+    return jsonify({"message": "Passcode sent successfully"}), 200
 
 @auth_bp.route("/check_token", methods=["POST"])
 def check_token():
@@ -51,12 +63,3 @@ def check_token():
     token = auth_header.split(" ")[1]
     result = helper.JWTAuth().verify_token(token)
     return jsonify(result)
-
-@auth_bp.route("/send_passcode", methods=["GET"])
-def send_passcode():
-    email = request.args.get("email")
-    if not email:
-        return jsonify({"error": "Email is required"}), 400
-    
-    Helper().send_telegram_bot_message(email)
-    return jsonify({"message": "Passcode sent successfully"}), 200
