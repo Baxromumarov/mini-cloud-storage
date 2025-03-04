@@ -26,13 +26,12 @@ def upload_file():
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
     file_url = helper.upload_file_to_s3(file_path)
-    
+
     if not file_url:
         os.remove(file_path)
         return jsonify({"error": "Failed to upload file"}), 500
     
     os.remove(file_path)
     db.insert_file(file.filename, folder_id, user_id,file_url)
-
 
     return jsonify({"message": "File uploaded successfully", "file_url": file_url}), 200
