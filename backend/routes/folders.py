@@ -20,7 +20,8 @@ def create_folder():
 @folders_bp.route("/folders", methods=["GET"])
 @jwt_required()
 def get_folders():
-    folders = db.get_all_folders(request.json["user_id"])
+    user = request.args.get("user_id")
+    folders = db.get_all_folders(user)
     return jsonify({"folders": folders}), 200
 
 @folders_bp.route("/folders", methods=["PUT"])
@@ -37,16 +38,17 @@ def update_folder():
 @folders_bp.route("/folders", methods=["DELETE"])
 @jwt_required()
 def delete_folder():
-    if not request.json["folder_id"]:
+    folder_id = request.args.get("folder_id")
+    if not folder_id:
         return jsonify({"error": "Folder id is required"}), 400
     
-    db.delete_folder(request.json.get("folder_id"))
+    db.delete_folder(folder_id)
     return jsonify({"message": "Folder deleted successfully"}), 200
 
-@folders_bp.route("/folders/<int:folder_id>", methods=["GET"])
+@folders_bp.route("/folders", methods=["GET"])
 @jwt_required()
-def get_folder(folder_id: int):
-    
+def get_folder():
+    folder_id = request.args.get("folder_id")
     folder = db.get_folder(folder_id)
     return jsonify({"folder": folder}), 200
 

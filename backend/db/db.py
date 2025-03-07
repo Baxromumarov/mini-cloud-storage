@@ -1,11 +1,15 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
-from utils import models
 
 load_dotenv()
 
-class DB:   
+class DB:  
+    print(os.getenv("DB_HOST"))
+    print(os.getenv("DB_NAME"))
+    print(os.getenv("DB_USER"))
+    print(os.getenv("DB_PASSWORD"))
+
     def __init__(self):
         self.conn = psycopg2.connect(
             host=os.getenv("DB_HOST"),

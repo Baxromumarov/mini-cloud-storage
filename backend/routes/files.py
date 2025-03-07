@@ -10,7 +10,7 @@ db = Files()
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the folder exists
 
-@files_bp.route("/upload", methods=["POST"])
+@files_bp.route("/upload_file", methods=["POST"])
 @jwt_required()
 def upload_file():
     if "file" not in request.files:
@@ -35,3 +35,28 @@ def upload_file():
     db.insert_file(file.filename, folder_id, user_id,file_url)
 
     return jsonify({"message": "File uploaded successfully", "file_url": file_url}), 200
+
+@files_bp.route("/get_files", methods=["GET"])
+@jwt_required()
+def get_files():
+
+    folder_id = request.args.get("folder_id")
+    offset = request.args.get("offset")
+    if offset is None  or offset == "":
+        offset = 0
+
+    print("OFFSET: ",offset)
+    print("FOLDER ID: ",folder_id)
+
+    files, total_count = db.get_all_files( folder_id, offset)
+    return jsonify({"files":files, "total_count":total_count}), 200
+
+@files_bp.route("/delete_file", methods=["DELETE"])
+@jwt_required()
+def delete_file():
+    file_id = request.args.get("file_id")
+    print("FILE ID: ",file_id)
+    db.delete_file(file_id)
+    return jsonify({"message": "File deleted successfully"}), 200
+
+
