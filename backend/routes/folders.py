@@ -18,10 +18,10 @@ def create_folder():
     return jsonify({"message": "Folder created successfully","folder_id":folder_id}), 200
 
 @folders_bp.route("/folders", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_folders():
-    user = request.args.get("user_id")
-    folders = db.get_all_folders(user)
+    user_id = request.args.get("user_id")
+    folders = db.get_all_folders(user_id)
     return jsonify({"folders": folders}), 200
 
 @folders_bp.route("/folders", methods=["PUT"])

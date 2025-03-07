@@ -24,7 +24,17 @@ class Folder(DB):
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM folders WHERE user_id = %s", (user_id,))
         folders = cursor.fetchall()
-        return folders
+
+        result = []
+        for folder in folders:
+            result.append({
+                "folder_id": folder[0],
+                "folder_name": folder[1],
+                "user_id": int(folder[2]),
+                "created_at": str(folder[4]),  
+                "updated_at": str(folder[5])   
+            })
+        return result
         
     def get_folder_by_name(self, folder_name: str, user_id: int):
         cursor = self.conn.cursor()
