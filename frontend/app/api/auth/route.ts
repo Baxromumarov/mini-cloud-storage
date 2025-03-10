@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getAuthHeader } from '../../utils/auth'
 
 export async function POST(request: NextRequest) {
     try {
@@ -11,39 +10,35 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
         }
 
-        let requestBody = JSON.stringify({
-            passcode: passcode,
-            full_name: full_name,
-            email: email
-        })
-
         // Send request to the external API
         const response = await fetch('https://api.cloud.storage.bakhrom.org/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: requestBody,
+            body: JSON.stringify({
+                email,
+                passcode,
+                full_name
+            }),
         })
 
         const data = await response.json()
-        console.log(data)
-        
+
         if (response.status !== 200) {
-            console.log(data)
             return NextResponse.json({ error: data.error || 'Authentication failed' }, { status: response.status })
         }
 
-        // Create response with token
+        // Create response with token and user_id
         const responseData = {
             success: true,
             token: data.token,
+            user_id: data.user_id,
             message: 'Login successful'
         }
-        console.log(responseData)
+
         // Create response object with cookie
         const res = NextResponse.json(responseData, { status: 200 })
-
 
         // Set HTTP-only cookie for additional security
         res.cookies.set('token', data.token, {
@@ -55,7 +50,6 @@ export async function POST(request: NextRequest) {
 
         return res
     } catch (error) {
-    
         console.error("Authentication error:", error)
         return NextResponse.json({ error: "Authentication failed" }, { status: 500 })
     }

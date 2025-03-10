@@ -25,7 +25,9 @@ export const useAuth = () => {
             }
 
             if (data.token) {
+                // Store both token and user_id
                 setAuthToken(data.token);
+                localStorage.setItem('user_id', data.user_id);
                 setIsLoggedIn(true);
                 return { success: true };
             } else {
@@ -42,6 +44,7 @@ export const useAuth = () => {
 
     const logout = () => {
         removeAuthToken();
+        localStorage.removeItem('user_id');
         setIsLoggedIn(false);
     };
 

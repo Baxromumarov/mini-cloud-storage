@@ -2,6 +2,7 @@
 
 import type React from "react"
 
+import { useAuth } from "@/app/hooks/useAuth"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,6 +16,7 @@ export default function LoginForm() {
     const [full_name, setfull_name] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
+    const { login } = useAuth()
 
     const handleEmailSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -45,34 +47,15 @@ export default function LoginForm() {
         setIsLoading(true)
 
         try {
-            const response = await fetch('https://api.cloud.storage.bakhrom.org/login', {
-                method: 'POST',
-                mode: 'cors',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    passcode,
-                    full_name
-                }),
-            })
+            const result = await login(email, passcode, full_name)
 
-            if (response.status !== 200) {
-                throw new Error('Failed to verify passcode')
-            }
-
-            const data = await response.json()
-            console.log("LOGIN >>>>>>> ",data)
-            if (data.token !== "") {
+            if (result.success) {
                 // Store user data in localStorage
                 localStorage.setItem("user", JSON.stringify({ email, full_name }))
                 // Redirect to dashboard
                 router.push("/dashboard")
             } else {
-                throw new Error(data.message || 'Invalid passcode')
+                throw new Error(result.error || 'Login failed')
             }
         } catch (error) {
             console.error("Authentication error:", error)

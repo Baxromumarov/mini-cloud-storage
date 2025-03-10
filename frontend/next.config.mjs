@@ -21,6 +21,14 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://api.cloud.storage.bakhrom.org/:path*',
+      },
+    ]
+  },
 }
 
 mergeConfig(nextConfig, userConfig)
