@@ -44,6 +44,7 @@ def login():
 
 @auth_bp.route("/send_passcode", methods=["GET"])
 def send_passcode():
+
     email = request.args.get("email")
     if not email:
         return jsonify({"error": "Email is required"}), 400

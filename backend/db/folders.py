@@ -22,6 +22,9 @@ class Folder(DB):
     
     def get_all_folders(self, user_id: int):
         cursor = self.conn.cursor()
+        totalFolders =0 
+        cursor.execute("SELECT COUNT(*) FROM folders WHERE user_id = %s", (user_id,))
+        totalFolders = cursor.fetchone()[0]
         cursor.execute("SELECT * FROM folders WHERE user_id = %s", (user_id,))
         folders = cursor.fetchall()
 
@@ -34,7 +37,7 @@ class Folder(DB):
                 "created_at": str(folder[4]),  
                 "updated_at": str(folder[5])   
             })
-        return result
+        return result, totalFolders
         
     def get_folder_by_name(self, folder_name: str, user_id: int):
         cursor = self.conn.cursor()

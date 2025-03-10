@@ -21,8 +21,8 @@ def create_folder():
 # @jwt_required()
 def get_folders():
     user_id = request.args.get("user_id")
-    folders = db.get_all_folders(user_id)
-    return jsonify({"folders": folders}), 200
+    folders, totalFolders = db.get_all_folders(user_id)
+    return jsonify({"folders": folders, "count": totalFolders}), 200
 
 @folders_bp.route("/folders", methods=["PUT"])
 @jwt_required()
