@@ -30,10 +30,11 @@ def login():
 
 
     token = helper.JWTAuth().generate_token(user.email)
+   
 
-    if user.passcode != "123456":
+    if provided_passcode != "123456":
         helper.passcode_dict.pop(user.email)
-
+    
     db = Users()
     db_user = db.get_user(user.email)
     user_id = db_user[0] if db_user else db.create_user(user)
