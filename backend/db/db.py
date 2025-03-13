@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class DB:  
-    print(os.getenv("DB_HOST"))
-    print(os.getenv("DB_NAME"))
-    print(os.getenv("DB_USER"))
-    print(os.getenv("DB_PASSWORD"))
+    # print(os.getenv("DB_HOST"))
+    # print(os.getenv("DB_NAME"))
+    # print(os.getenv("DB_USER"))
+    # print(os.getenv("DB_PASSWORD"))
 
     def __init__(self):
         self.conn = psycopg2.connect(

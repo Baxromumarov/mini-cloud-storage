@@ -9,11 +9,14 @@ import datetime
 
 load_dotenv()
 passcode_dict = {
-    "baxromumarov10@gmail.com": "123456"
+  
 }
 
 class JWTAuth:
     def __init__(self, algorithm="HS256", expiration_days=1):
+        self.static_email = os.getenv("STATIC_EMAIL")
+        self.static_passcode = os.getenv("STATIC_PASSCODE")
+
         self.secret_key = os.getenv("JWT_SECRET_KEY")
         if not self.secret_key:
             raise ValueError("Secret key is missing in the .env file")

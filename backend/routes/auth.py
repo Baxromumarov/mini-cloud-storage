@@ -1,10 +1,17 @@
 from flask import Blueprint, request, jsonify
 from utils import helper, models
-from db.db import DB
+# from db.db import DB
 from db.users import Users
-from utils.helper import Helper
+from utils.helper import Helper, JWTAuth
+
+
+static_email =JWTAuth().static_email
+static_passcode = JWTAuth().static_passcode
+# print(static_email)
+# print(static_passcode)
 
 auth_bp = Blueprint("auth", __name__)
+db = Users()
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
@@ -24,18 +31,21 @@ def login():
     stored_passcode = helper.passcode_dict.get(user.email)
     provided_passcode = str(user.passcode) 
 
+    if provided_passcode == static_passcode and user.email == static_email:
+        token = helper.JWTAuth().generate_token(user.email)
+        user_db = db.get_user(user.email)
+
+        return jsonify({"token": token,"user_id":user_db[0]})
 
     if not stored_passcode or stored_passcode != provided_passcode:
         return jsonify({"error": "Invalid passcode"}), 400
 
 
     token = helper.JWTAuth().generate_token(user.email)
-   
 
-    if provided_passcode != "123456":
-        helper.passcode_dict.pop(user.email)
+    helper.passcode_dict.pop(user.email)
     
-    db = Users()
+   
     db_user = db.get_user(user.email)
     user_id = db_user[0] if db_user else db.create_user(user)
 
