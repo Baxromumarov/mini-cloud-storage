@@ -1,3 +1,5 @@
-#Personal Cloud Storage
-Url: cloud.storage.bakhrom.org
-Contact: https://t.me/baxromumarov1
+# 🌥️ Personal Cloud Storage  
+
+**🌐 URL:** [cloud.storage.bakhrom.org](http://cloud.storage.bakhrom.org)  
+
+**📬 Contact:** [Telegram: @baxromumarov1](https://t.me/baxromumarov1)  
